@@ -56,7 +56,7 @@ disp(['The average August temperature in Atlanta is ', num2str(AUGave,4),' deg F
 
 figure(2);
 
-bin=74:1:86;
+bin=72:1:86;
 histogram(AUG,bin);
 xlabel('temperature (deg F)');
 ylabel('data count');
