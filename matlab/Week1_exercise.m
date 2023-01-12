@@ -55,11 +55,23 @@ disp(['The average August temperature in Atlanta is ', num2str(AUGave,4),' deg F
 %% plot histogram
 
 figure(2);
+
 bin=74:1:86;
 histogram(AUG,bin);
 xlabel('temperature (deg F)');
 ylabel('data count');
 set(gca,'fontsize',12);
+% add normal distribution curve
+
+hold on;
+mu=AUGave;
+sig=std(AUG);
+x=72:.1:86;
+y=numel(AUG).*1.*normpdf(x,mu,sig);
+plot(x,y,'linewidth',1.5);
+
+
+
 
 %% box plot
 figure(3);
