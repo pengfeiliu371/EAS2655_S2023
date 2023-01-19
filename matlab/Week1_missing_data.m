@@ -6,8 +6,7 @@ clc;clear; close all; fclose all;
 
 %% load data (saved as excel spread sheet in the same folder)
 
-data_table=readtable('./ATL_MonMeanTemp_1879_2022.xlsx');
-
+data_table=readtable('./ATL_MonMeanTemp_1879_2022_with_missing.xlsx');
 
 %%
 % year
@@ -24,19 +23,12 @@ All_Month=table2array(data_table(:,2:13));
 
 % calculate annual mean from all months
 
-Annual=mean(All_Month,2);
+Annual=mean(All_Month,2,'omitnan');
 
 % average and median of annual mean temperature
 
-Annual_ave=mean(Annual)
-Annual_median=median(Annual)
-
-% % validation
-% Annual2=data_table.Annual;
-% 
-% figure;
-% hold on;
-% plot(Annual,Annual2,'.');
+Annual_ave=mean(Annual,'omitnan')
+Annual_median=median(Annual,'omitnan')
 
 
 %% let's plot the August temperature as a function of time
@@ -49,35 +41,31 @@ ylabel('Temperature (deg F)')
 set(gca,'fontsize',12);
 
 
-AUGave=nanmean(AUG);
+AUGave=mean(AUG,'omitnan');
 disp(['The average August temperature in Atlanta is ', num2str(AUGave,4),' deg F.'])
 
-%% plot histogram
+%%
+figure;
 
-figure(2);
-hold on;
-bin=74:1:86;
+bin=72:1:86;
 histogram(AUG,bin);
 xlabel('temperature (deg F)');
 ylabel('data count');
 set(gca,'fontsize',12);
 % add normal distribution curve
+
+hold on;
 mu=AUGave;
-sig=std(AUG);
-
-x=74:.1:86;
-y=numel(AUG).*1.*normpdf(x,mu,sig);
-plot(x,y);
-
-
-
+sig=std(AUG,'omitnan');
+x=72:.1:86;
+y=numel(AUG(~isnan(AUG))).*1.*normpdf(x,mu,sig);
+plot(x,y,'linewidth',1.5);
 
 %% box plot
-figure(3);
+figure;
 boxplot(All_Month);
 ylabel('temperature (deg F)');
 xlabel('month');
 set(gca,'fontsize',12);
-
 
 
