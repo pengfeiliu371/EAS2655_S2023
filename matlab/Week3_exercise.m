@@ -175,7 +175,7 @@ CL=0.95;
 %% Step 2. State the hypotheses
 % H0: the average annual temperature of Atlanta for 1990s is NOT significantly different from that for 1980s.
 
-% H1: the average annual temperature of Atlanta for 1990s is NOT significantly different from that for 1980s.
+% H1: the average annual temperature of Atlanta for 1990s is significantly different from that for 1980s.
 
 %% Step 3. State the statistic used
 % We will use Student's t-distribution with two-tailed test (two-sample test).
