@@ -183,7 +183,7 @@ plot(year,T_feb4,'-','linewidth',1.5,'DisplayName','SEA');
 
 xlabel('Year');
 ylabel('Temperature (^\circF)');
-title('Feburary Temperature');
+title('February Temperature');
 xlim([1890,2030]);
 set(gca,'fontsize',18);
 
@@ -192,7 +192,7 @@ legend('orientation','Horizontal','location','south');
 print('-dpng', 'week4_fig3_four_cities_feb_temp.png');
 
 
-%% calculation covariance and correlation
+%% calculation of covariance and correlation
 
 ind=~isnan(T_feb1) & ~isnan(T_feb2) & ~isnan(T_feb3) & ~isnan(T_feb4);
 D=[T_feb1(ind),T_feb2(ind),T_feb3(ind),T_feb4(ind)];
@@ -207,9 +207,9 @@ c_mat=cov(D);
 figure;
 hold on;
 plot(T_feb1,T_feb2,'o','linewidth',1.5,'MarkerSize',8);
-xlabel('ATL temperature');
-ylabel('BOS temperature');
-title('Feburary');
+xlabel('ATL temperature (deg F)');
+ylabel('BOS temperature (deg F)');
+title('February');
 set(gca,'fontsize',18);
 print('-dpng', 'week4_fig4_feb_temp_atl_bos.png');
 
@@ -218,9 +218,9 @@ print('-dpng', 'week4_fig4_feb_temp_atl_bos.png');
 figure;
 hold on;
 plot(T_feb3,T_feb4,'+','linewidth',1.5,'MarkerSize',8);
-xlabel('SFO temperature');
-ylabel('SEA temperature');
-title('Feburary');
+xlabel('SFO temperature (deg F)');
+ylabel('SEA temperature (deg F)');
+title('February');
 set(gca,'fontsize',18);
 print('-dpng', 'week4_fig4_feb_temp_sfo_sea.png');
 
@@ -229,9 +229,9 @@ print('-dpng', 'week4_fig4_feb_temp_sfo_sea.png');
 figure;
 hold on;
 plot(T_feb1,T_feb3,'^','linewidth',1.5,'MarkerSize',8);
-xlabel('ATL temperature');
-ylabel('SFO temperature');
-title('Feburary');
+xlabel('ATL temperature (deg F)');
+ylabel('SFO temperature (deg F)');
+title('February');
 set(gca,'fontsize',18);
 print('-dpng', 'week4_fig4_feb_temp_atl_sfo.png');
 
