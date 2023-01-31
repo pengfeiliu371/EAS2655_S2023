@@ -87,8 +87,9 @@ D=[year(ind),Annual(ind)];
 c=cov(D);
 % estimate regression coefficients
 a=c(1,2)./c(1,1); % slope
-b=mean(Annual(ind))-a*mean(year(ind));
-r2=(c(1,2).^2)./(c(1,1).*c(2,2));
+b=mean(Annual(ind))-a*mean(year(ind)); % intercept
+
+r2=(c(1,2).^2)./(c(1,1).*c(2,2)); % coefficient of determination
 
 disp(' ');
 disp('Part 2: Atlanta temperature ');
@@ -116,6 +117,38 @@ xlabel('Year');
 ylabel('Temperature (^\circF)');
 set(gca,'fontsize',18);
 print('-dpng', 'week4_fig2_atlanta_temp_fit.png');
+
+
+%% calculate the regression coefficients for a selected period
+% all data
+ind=(~isnan(Annual)) & (year>=1970);
+% assemble the matrix [x,y]
+D=[year(ind),Annual(ind)];
+% calculate the Covariance matrix
+c=cov(D);
+% estimate regression coefficients
+a=c(1,2)./c(1,1); % slope
+b=mean(Annual(ind))-a*mean(year(ind)); % intercept
+
+r2=(c(1,2).^2)./(c(1,1).*c(2,2)); % coefficient of determination
+
+disp(' ');
+disp('Regression for a selected period (after 1970)');
+disp('Estimated based on covariance matrix:');
+disp(['The temperature changes ',num2str(a,3),' deg F per year.']);
+disp(['R^2 = ',num2str(r2,3)]);
+disp([num2str(r2*100,4),'% of the variance is explained by the linear trend.']);
+
+%% make a plot
+figure;
+hold on;
+plot(year,Annual,'-','linewidth',1.5);
+plot(year(ind),a.*year(ind)+b,'-','linewidth',1.5);
+xlabel('Year');
+ylabel('Temperature (^\circF)');
+title('Atlanta, Annual temperature');
+set(gca,'fontsize',18);
+print('-dpng', 'week4_fig2_atlanta_temp_fit_1970_2022.png');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -87,8 +87,9 @@ D=[year(ind),Annual(ind)];
 c=cov(D);
 % estimate regression coefficients
 a=c(1,2)./c(1,1); % slope
-b=mean(Annual(ind))-a*mean(year(ind));
-r2=(c(1,2).^2)./(c(1,1).*c(2,2));
+b=mean(Annual(ind))-a*mean(year(ind)); % intercept
+
+r2=(c(1,2).^2)./(c(1,1).*c(2,2)); % coefficient of determination
 
 disp(' ');
 disp('Part 2: Atlanta temperature ');
@@ -118,6 +119,28 @@ set(gca,'fontsize',18);
 print('-dpng', 'week4_fig2_atlanta_temp_fit.png');
 
 
+%% calculate the regression coefficients for a selected period
+% all data
+ind=(~isnan(Annual)) & (year>=1970);
+% assemble the matrix [x,y]
+D=[year(ind),Annual(ind)];
+% calculate the Covariance matrix
+c=cov(D);
+% estimate regression coefficients
+a=c(1,2)./c(1,1); % slope
+b=mean(Annual(ind))-a*mean(year(ind)); % intercept
+
+r2=(c(1,2).^2)./(c(1,1).*c(2,2)); % coefficient of determination
+
+disp(' ');
+disp('Regression for a sle');
+disp('Estimated based on covariance matrix:');
+disp(['The temperature changes ',num2str(a,3),' deg F per year.']);
+disp(['R^2 = ',num2str(r2,3)]);
+disp([num2str(r2*100,4),'% of the variance is explained by the linear trend.']);
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Part 3. Comparison of different cities
 % import data (with missing values)
@@ -139,7 +162,7 @@ T_feb2=data_table2.Feb;
 T_feb3=data_table3.Feb;
 T_feb4=data_table4.Feb;
 
-%% make a plot
+%% make a time series plot
 
 figure;
 hold on;
@@ -149,21 +172,64 @@ plot(year,T_feb3,'-','linewidth',1.5,'DisplayName','SFO');
 plot(year,T_feb4,'-','linewidth',1.5,'DisplayName','SEA');
 
 xlabel('Year');
-ylabel('Feb. Temperature (^\circF)');
+ylabel('Temperature (^\circF)');
+title('Feburary Temperature');
 xlim([1890,2030]);
 set(gca,'fontsize',18);
 
-legend('Ho');
+legend('orientation','Horizontal','location','south');
+
+print('-dpng', 'week4_fig3_four_cities_feb_temp.png');
 
 
+%% calculation covariance and correlation
+
+ind=~isnan(T_feb1) & ~isnan(T_feb2) & ~isnan(T_feb3) & ~isnan(T_feb4);
+D=[T_feb1(ind),T_feb2(ind),T_feb3(ind),T_feb4(ind)];
+% correlation matrix
+r_mat=corrcoef(D); 
+% covariance matrix
+c_mat=cov(D);
 
 
+%% correlation plot
+% atlanta vs. boston
+figure;
+hold on;
+plot(T_feb1,T_feb2,'o','linewidth',1.5,'MarkerSize',8);
+xlabel('ATL temperature');
+ylabel('BOS temperature');
+title('Feburary');
+set(gca,'fontsize',18);
+print('-dpng', 'week4_fig4_feb_temp_atl_bos.png');
 
+%%
+% san francisco vs. seattle
+figure;
+hold on;
+plot(T_feb3,T_feb4,'+','linewidth',1.5,'MarkerSize',8);
+xlabel('SFO temperature');
+ylabel('SEA temperature');
+title('Feburary');
+set(gca,'fontsize',18);
+print('-dpng', 'week4_fig4_feb_temp_sfo_sea.png');
 
+%%
+% atlanta vs. san francisco
+figure;
+hold on;
+plot(T_feb1,T_feb3,'^','linewidth',1.5,'MarkerSize',8);
+xlabel('ATL temperature');
+ylabel('SFO temperature');
+title('Feburary');
+set(gca,'fontsize',18);
+print('-dpng', 'week4_fig4_feb_temp_atl_sfo.png');
 
-
-
-
+%% test the significance
+N=numel(T_feb1(ind));
+t_value=r_mat.*sqrt((N-2)./(1-r_mat.^2));
+% critical t value
+tcrit=norminv(0.975);
 
 
 
