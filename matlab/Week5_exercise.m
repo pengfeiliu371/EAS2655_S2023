@@ -1,6 +1,8 @@
 %% Week 5 exercise
 % statistical tests for regression and correlation
 
+clc;clear;close all;fclose all;
+
 %% Part 1. Test if the increasing trend of atlanta temperature is statistically significant
 
 % import data (with missing values)
@@ -223,7 +225,7 @@ SE=sqrt((1-r.^2)./(N-2));
 disp(['SE = ', num2str(SE,3)]);
 
 t_val=abs(r)/SE;
-disp(['t value = ', num2str(SE,3)]);
+disp(['t value = ', num2str(t_val,3)]);
 
 disp('t > tcrit, H0 is rejected');
 disp('There is a significant negative correlation between ATL and SEA february temperature at 95% (and 99%) confidence level');
@@ -240,16 +242,24 @@ alpha=1-CL;
 
 % 3. State statistics used
 % What statistics should we use? One-tailed or two-tailed?
+% We will use two tailed test
 
 % 4. Determine critical region
 % What is the tcrit value?
+N=size(D,1);
+df=N-2;
 
+tcrit=tinv(1-alpha./2,df);
+
+
+%%
 % 5. Evaluate whether data rejects the null hypothesis
 % How do we calculate the t-value (Hint: use the correlation coefficient matrix)?
+r_mat=corrcoef(D);
+SE_mat=sqrt((1-r_mat.^2)./(N-2));
 
+t_val_mat=abs(r_mat)./SE_mat;
 
+result= t_val_mat>tcrit;
 
-
-
-
-
+disp(result)
